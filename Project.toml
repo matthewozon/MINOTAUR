@@ -2,7 +2,7 @@ name = "MINOTAUR"
 uuid = "133e5054-af73-4fd6-9159-4bf12f03d841"
 version = "0.0.0"
 
-[dep]
+[deps]
 Test   = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 DocumenterTools = "35a29f4d-8980-5a13-9543-d66fff28ecb8"
 
