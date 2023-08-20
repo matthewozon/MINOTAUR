@@ -1,0 +1,8 @@
+name = "MINOTAUR"
+uuid = "133e5054-af73-4fd6-9159-4bf12f03d841"
+version = "0.0.0"
+
+# [dep]
+[compat]
+julia = "1"
+
