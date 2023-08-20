@@ -1,2 +1,2 @@
 # MINOTAUR
-Quadrature for integrale of composed function
+Quadrature for integrals of composed functions
