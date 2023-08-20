@@ -5,8 +5,8 @@ on:
   #  branches:
   #    - master
   #  paths:
-  #    - 'MINAUTOR/src/**'
-  #    - 'MINAUTOR/test/**'
+  #    - 'MINOTAUR/src/**'
+  #    - 'MINOTAUR/test/**'
 
 jobs:
   test:
@@ -33,4 +33,4 @@ jobs:
           - x64
     steps:
         - uses: actions/checkout@v3
-        - run: julia -e 'using Pkg; println(readdir()); Pkg.develop(path="./"); Pkg.build("MINAUTOR"); Pkg.test("MINAUTOR"; coverage=true)'
+        - run: julia -e 'using Pkg; println(readdir()); Pkg.develop(path="./"); Pkg.build("MINOTAUR"); Pkg.test("MINOTAUR"; coverage=true)'
