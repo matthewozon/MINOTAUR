@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · MINOTAUR</title><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>MINOTAUR</a></span></div><form class="docs-search" action="search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/matthewozon/MINOTAUR/blob/master/docs/src/index.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="MINOTAUR.jl"><a class="docs-heading-anchor" href="#MINOTAUR.jl">MINOTAUR.jl</a><a id="MINOTAUR.jl-1"></a><a class="docs-heading-anchor-permalink" href="#MINOTAUR.jl" title="Permalink"></a></h1><p>Documentation for MINOTAUR.jl</p><article class="docstring"><header><a class="docstring-binding" id="MINOTAUR.MINOTAUR" href="#MINOTAUR.MINOTAUR"><code>MINOTAUR.MINOTAUR</code></a> — <span class="docstring-category">Module</span></header><section><div><p>This is the <a href="#MINOTAUR.MINOTAUR"><code>MINOTAUR</code></a>, it contains </p><ul><li><a href="#MINOTAUR.MINOTAUR"><code>MINOTAUR.MINOTAUR</code></a></li><li><a href="#MINOTAUR.logistic"><code>MINOTAUR.logistic</code></a></li><li><a href="#MINOTAUR.f_logistic"><code>MINOTAUR.f_logistic</code></a></li><li><a href="#MINOTAUR.g_sqrtquad"><code>MINOTAUR.g_sqrtquad</code></a></li><li><a href="#MINOTAUR.g_sqrtquad_inv_pos"><code>MINOTAUR.g_sqrtquad_inv_pos</code></a></li><li><a href="#MINOTAUR.g_sqrtquad_inv_neg"><code>MINOTAUR.g_sqrtquad_inv_neg</code></a></li><li><a href="#MINOTAUR.interval"><code>MINOTAUR.interval</code></a></li><li><a href="#MINOTAUR.quadrature_fg"><code>MINOTAUR.quadrature_fg</code></a></li><li><a href="#MINOTAUR.τ_root_sphere"><code>MINOTAUR.τ_root_sphere</code></a></li><li><a href="#MINOTAUR.quadrature_fg_sphere"><code>MINOTAUR.quadrature_fg_sphere</code></a></li><li><a href="#MINOTAUR.quadrature_fg_sphere_g_opt_f"><code>MINOTAUR.quadrature_fg_sphere_g_opt_f</code></a></li><li><a href="#MINOTAUR.τ_root_cylinder"><code>MINOTAUR.τ_root_cylinder</code></a></li><li><a href="#MINOTAUR.quadrature_fg_cylinder"><code>MINOTAUR.quadrature_fg_cylinder</code></a></li><li><a href="#MINOTAUR.quadrature_fg_cylinder_g_opt_f"><code>MINOTAUR.quadrature_fg_cylinder_g_opt_f</code></a></li></ul><pre><code class="nohighlight hljs">Attempt to optimize the discretization for the quadrature to compute the integral
+
+    ∫_τ1^τ2 f(g(τ)) dτ
+
+assuming that g is a bijection, and that g^{-1} assumes non-infinite values
+
+We choose to discretize τ so that enough details of f are represented
+
+We choose a subdivision r_i that captures the details of f over the interval [min(g(τ1),g(τ2)),max(g(τ1),g(τ2))]</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/matthewozon/MINOTAUR/blob/58caaba10979a6381096cd83b53c9e5dbd164650/src/MINOTAUR.jl#L1-L29">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="MINOTAUR.logistic" href="#MINOTAUR.logistic"><code>MINOTAUR.logistic</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">logistic(x::Cdouble,thX::Cdouble=33.275)
+
+returns the value of the logistic function at x, 0 if x&lt;-thX, 1 if x&gt;thX
+    1/(1+e^{-x})
+
+logistic(x::Cdouble,a::Cdouble,b::Cdouble,α::Cdouble=1.0,thX::Cdouble=33.275)
+
+returns the value of the logistic function at x, 0 if αx&lt;-thX, 1 if αx&gt;thX
+    a + (b-a)/(1+(1/α)*e^{-αx})</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/matthewozon/MINOTAUR/blob/58caaba10979a6381096cd83b53c9e5dbd164650/src/discretization.jl#L2-L12">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="MINOTAUR.f_logistic" href="#MINOTAUR.f_logistic"><code>MINOTAUR.f_logistic</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">function used for tests of the integral of composition of functions
+
+    f_logistic(r::Array{Cdouble,1},r0::Cdouble,Δr::Cdouble;A::Cdouble=1.0)
+
+input:
+
+  - r: radial distance
+  - r0: critical distance 
+  - Δr: transition distance
+  - A: amplitude (default at 1)
+
+output: 
+
+  - A/(1.0+exp((r-r0)/Δr))</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/matthewozon/MINOTAUR/blob/58caaba10979a6381096cd83b53c9e5dbd164650/src/discretization.jl#L34-L49">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="MINOTAUR.g_sqrtquad" href="#MINOTAUR.g_sqrtquad"><code>MINOTAUR.g_sqrtquad</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">g_sqrtquad(τ::Cdouble,a::Cdouble,b::Cdouble,c::Cdouble)
+
+inner function of the composition in the integral ∫_τ1^τ2 f(g(τ)) dτ
+
+Inspired by the distance from a central point to a point on a parametric line 
+
+computes √(a*τ^2+b*τ+c) and should be called with a&gt;0, and b^2&lt;4ac so that a*τ^2+b*τ+c⩾0</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/matthewozon/MINOTAUR/blob/58caaba10979a6381096cd83b53c9e5dbd164650/src/discretization.jl#L57-L65">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="MINOTAUR.g_sqrtquad_inv_pos" href="#MINOTAUR.g_sqrtquad_inv_pos"><code>MINOTAUR.g_sqrtquad_inv_pos</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">g_sqrtquad_inv_pos(r::Cdouble,a::Cdouble,b::Cdouble,c::Cdouble)
+
+increasing inverse of sqrt(a*τ^2+b*τ+c), i.e. τ⩾-b/(2a)
+
+should be called with a&gt;0 and b^2&lt;4ac
+
+returns √((r^2 + (b^2/(4a)) - c)/a) - b/(2a)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/matthewozon/MINOTAUR/blob/58caaba10979a6381096cd83b53c9e5dbd164650/src/discretization.jl#L74-L82">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="MINOTAUR.g_sqrtquad_inv_neg" href="#MINOTAUR.g_sqrtquad_inv_neg"><code>MINOTAUR.g_sqrtquad_inv_neg</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">g_sqrtquad_inv_neg(r::Cdouble,a::Cdouble,b::Cdouble,c::Cdouble)
+
+decreasing inverse of sqrt(a*τ^2+b*τ+c), i.e. τ&lt;-b/(2a)
+
+should be called with a&gt;0 and b^2&lt;4ac
+
+returns -√((r^2 + (b^2/(4a)) - c)/a) - b/(2a)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/matthewozon/MINOTAUR/blob/58caaba10979a6381096cd83b53c9e5dbd164650/src/discretization.jl#L101-L109">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="MINOTAUR.interval" href="#MINOTAUR.interval"><code>MINOTAUR.interval</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">interval(τ_min_0::Cdouble,τ_max_0::Cdouble,a::Cdouble,b::Cdouble,c::Cdouble)
+
+Let τ_min=min(τ_min_0,τ_max_0) ⩽ τ_max=max(τ_min_0,τ_max_0)
+
+This function determines the interval boundaries corresponding to g([τ_min,τ_max]) with g(τ) = √(a*τ^2+b*τ+c) (where a&gt;0 and b^2&lt;4ac so that a*τ^2+b*τ+c⩾0)
+
+The determination of the boundaries depends on the values τ_min and τ_max relative to τ0 = -b/(2a) (corrseponding to the argmin of g)
+
+if τ_min and τ_max ⩾ τ0
+    g is increasing, so rmin = g(τ_min), and rmax = g(τ_max). rmid = Inf to indicate the lack of intermediate point
+if τ_min and τ_max ⩽ τ0
+    g is decreasing, so rmin = g(τ_max), and rmax = g(τ_min). rmid = Inf to indicate the lack of intermediate point
+if τ_min⩽τ0⩽τ_max
+    g is decreasing over [τ_min,τ0], and increasing over [τ0,τ_max], rmid = g(τ0), rmin = g(τ_min), and rmax = g(τ_max)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/matthewozon/MINOTAUR/blob/58caaba10979a6381096cd83b53c9e5dbd164650/src/discretization.jl#L129-L145">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="MINOTAUR.quadrature_fg" href="#MINOTAUR.quadrature_fg"><code>MINOTAUR.quadrature_fg</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">quadrature_fg(f::Function,τ_min::Cdouble,τ_max::Cdouble,a::Cdouble,b::Cdouble,c::Cdouble,Δr0::Cdouble;Nr_min::Int64=20)
+
+computes the trapezoid quadrature for the integral
+
+    ∫_{τ_min}^{τ_max} f(g(τ)) dτ
+
+with τ_min&lt;τ_max, and g(τ) = √(a*τ^2+b*τ+c) (where a&gt;0 and b^2&lt;4ac so that a*τ^2+b*τ+c⩾0)
+
+The minumim resolution for the variable r for f is Δr0, and the discretization of r should have at least Nr_min nodes.
+
+
+
+
+
+quadrature_fg(fgs::Array{Cdouble,1},τs::Array{Cdouble,1})
+
+computes the quadrature ∑_n f(g(τ_n)) ∫ e_n(τ) dτ ≃ ∫_{τ_min}^{τ_max} f(g(τ)) dτ
+
+with fgs[n] = f(g(τs[n])) and e_n piecewise linear basis functions</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/matthewozon/MINOTAUR/blob/58caaba10979a6381096cd83b53c9e5dbd164650/src/discretization.jl#L173-L194">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="MINOTAUR.τ_root_sphere" href="#MINOTAUR.τ_root_sphere"><code>MINOTAUR.τ_root_sphere</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">determines the distance on the parametric line starting from (xm,ym,zm) in the direction (x0,y0,z0)
+
+τ_root_sphere(x0::Cdouble,y0::Cdouble,z0::Cdouble,xm::Cdouble,ym::Cdouble,zm::Cdouble,R2::Cdouble,rm2::Cdouble)
+
+input: 
+
+  - xm, ym and zm: origin of the parametric line (τ=0)
+  - x0, y0 and z0: coordinates of a point on the parametric line
+  - R2: square radius of the intersecting sphere 
+  - rm2: square distance between the center of the sphere and (xm,ym,zm), rm^2=xm^2+ym^2+zm^2  (R2-rm2⩾0)
+
+output: 
+
+  - return the distance between the (xm,ym,zm) and the intersection point (sphere of radius R and straight line between (xm,ym,zm) and (x0,y0,z0))</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/matthewozon/MINOTAUR/blob/58caaba10979a6381096cd83b53c9e5dbd164650/src/sphere.jl#L1-L16">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="MINOTAUR.quadrature_fg_sphere" href="#MINOTAUR.quadrature_fg_sphere"><code>MINOTAUR.quadrature_fg_sphere</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">quadrature evaluating the integral ∫_{τmin}^{τmax} f(g(τ)) dτ for a sphere of radius μ0
+
+with g(τ)=√(a*τ^2+b*τ+c) with a, b and c defined for each position in the sphere (depend on the location in the sphere and the direction of the parametric line)
+
+f(r) is a mass function depending depending on the distance from the center of the sphere 
+
+the integral boundaries are such that the parametric curve satifies τmin-&gt;(r[n],φ[j],θ[k]) and in τmax-&gt;(r(τmax),φ(τmax),θ(τmax)) with r(τmax)=μ0+κΔr 
+τmin is set to 0 without loss of generality and τmax is determined for each position in the sphere 
+
+quadrature_fg_sphere(r::Array{Cdouble,1},φ::Array{Cdouble,1},θ::Array{Cdouble,1},x0::Cdouble,y0::Cdouble,z0::Cdouble,μ0::Cdouble,Δr::Cdouble;κ::Cdouble=5.0,Nτ::Int64=20)
+
+input:
+
+  - r,φ,θ: spherical coordinates of the discretization of the sphere (polar axis Oz)
+  - x0,y0,z0: cartesian coordinate of a point belonging to the parametric straight line of integration
+  - μ0: radius of the sphere 
+  - Δr: transition distance of the mass function f
+
+optional input:
+
+  - κ:  maximum radius for the integration is r=μ0+κΔr
+  - Nτ: number of discretization nodes 
+
+output:
+
+  - FGQ_rφθ: 3D array containing the quadrature for each discretization nodes (r,φ,θ)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/matthewozon/MINOTAUR/blob/58caaba10979a6381096cd83b53c9e5dbd164650/src/sphere.jl#L44-L71">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="MINOTAUR.quadrature_fg_sphere_g_opt_f" href="#MINOTAUR.quadrature_fg_sphere_g_opt_f"><code>MINOTAUR.quadrature_fg_sphere_g_opt_f</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">quadrature_fg_sphere_g_opt_f(r::Array{Cdouble,1},θ::Array{Cdouble,1},y::Array{Cdouble,1},x0::Cdouble,y0::Cdouble,z0::Cdouble,μ0::Cdouble,Δr::Cdouble;κ::Cdouble=5.0,Nτ::Int64=20)
+
+quadrature evaluating the integral ∫_{τmin}^{τmax} f(g(τ)) dτ for a sphere of radius μ0 
+
+Contrary to quadrature_fg_sphere the quadrature is adjusted to f instead of g
+
+see quadrature_fg_sphere and quadrature_fg(f::Function,τ_min::Cdouble,τ_max::Cdouble,a::Cdouble,b::Cdouble,c::Cdouble,Δr0::Cdouble;Nr_min::Int64=20)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/matthewozon/MINOTAUR/blob/58caaba10979a6381096cd83b53c9e5dbd164650/src/sphere.jl#L110-L118">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="MINOTAUR.τ_root_cylinder" href="#MINOTAUR.τ_root_cylinder"><code>MINOTAUR.τ_root_cylinder</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">determines the distance on the parametric line starting from (xm,ym,zm) in the direction (x0,y0,z0) intersecting with the cylinder centered on the Oy axis and of radius R
+
+τ_root_cylinder(x0::Cdouble,y0::Cdouble,z0::Cdouble,xm::Cdouble,ym::Cdouble,zm::Cdouble,R2::Cdouble,rm2::Cdouble)
+
+input: 
+
+  - xm, ym and zm: origin of the parametric line (τ=0)
+  - x0, y0 and z0: coordinates of a point on the parametric line
+  - R2: square radius of the intersecting cylinder 
+  - rm2: square distance between the center of the cylinder and (xm,ym,zm), rm^2=xm^2+ym^2  (R2-rm2⩾0)
+
+output: 
+
+  - return the distance between the (xm,ym,zm) and the intersection point (cylinder of radius R along the Oy axis and straight line between (xm,ym,zm) and (x0,y0,z0))</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/matthewozon/MINOTAUR/blob/58caaba10979a6381096cd83b53c9e5dbd164650/src/cylinder.jl#L1-L16">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="MINOTAUR.quadrature_fg_cylinder" href="#MINOTAUR.quadrature_fg_cylinder"><code>MINOTAUR.quadrature_fg_cylinder</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">quadrature evaluating the integral ∫_{τmin}^{τmax} f(g(τ)) dτ for a cylinder of radius μ0 (along the axis Oy)
+
+
+with g(τ)=√(a*τ^2+b*τ+c) with a, b and c defined for each position in the cylinder (depend on the location in the cylinder and the direction of the parametric line)
+
+f(r) is a mass function depending depending on the distance from the center of the cylinder 
+
+the integral boundaries are such that the parametric curve satifies τmin-&gt;(r[n],θ[j],y[k]) and in τmax-&gt;(r(τmax),θ(τmax),y(τmax)) with r(τmax)=μ0+κΔr 
+τmin is set to 0 without loss of generality and τmax is determined for each position in the cylinder 
+
+
+quadrature_fg_cylinder(r::Array{Cdouble,1},θ::Array{Cdouble,1},y::Array{Cdouble,1},x0::Cdouble,y0::Cdouble,z0::Cdouble,μ0::Cdouble,Δr::Cdouble;κ::Cdouble=5.0,Nτ::Int64=20)
+
+input:
+
+  - r,θ,y: cylindrical coordinates of the discretization of the cylinder (symmetry axis Oy)
+  - x0,y0,z0: cartesian coordinate of a point belonging to the parametric straight line of integration
+  - μ0: radius of the cylinder
+  - Δr: transition distance of the mass function f
+
+optional input:
+
+  - κ:  maximum radius for the integration is r=μ0+κΔr
+  - Nτ: number of discretization nodes 
+
+output:
+
+  - FGQ_rθy: 3D array containing the quadrature for each discretization nodes (r,θ,y)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/matthewozon/MINOTAUR/blob/58caaba10979a6381096cd83b53c9e5dbd164650/src/cylinder.jl#L42-L72">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="MINOTAUR.quadrature_fg_cylinder_g_opt_f" href="#MINOTAUR.quadrature_fg_cylinder_g_opt_f"><code>MINOTAUR.quadrature_fg_cylinder_g_opt_f</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">quadrature_fg_cylinder_g_opt_f(r::Array{Cdouble,1},θ::Array{Cdouble,1},y::Array{Cdouble,1},x0::Cdouble,y0::Cdouble,z0::Cdouble,μ0::Cdouble,Δr::Cdouble;κ::Cdouble=5.0,Nτ::Int64=20)
+
+quadrature evaluating the integral ∫_{τmin}^{τmax} f(g(τ)) dτ for a cylinder of radius μ0 (along the axis Oy)
+
+Contrary to quadrature_fg_cylinder the quadrature is adjusted to f instead of g
+
+see quadrature_fg_cylinder and quadrature_fg(f::Function,τ_min::Cdouble,τ_max::Cdouble,a::Cdouble,b::Cdouble,c::Cdouble,Δr0::Cdouble;Nr_min::Int64=20)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/matthewozon/MINOTAUR/blob/58caaba10979a6381096cd83b53c9e5dbd164650/src/cylinder.jl#L108-L116">source</a></section></article></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.25 on <span class="colophon-date" title="Monday 21 August 2023 15:17">Monday 21 August 2023</span>. Using Julia version 1.9.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
