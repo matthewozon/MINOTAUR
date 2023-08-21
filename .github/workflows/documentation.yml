@@ -1,10 +1,13 @@
 name: Documentation
 
 on:
-  push:
-    branches:
-      - master 
-    tags: '*'
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - master 
+  #   paths:
+  #     - 'MINOTAUR/src/**'
+  #   tags: '*'
   pull_request:
 
 jobs:
