@@ -45,7 +45,7 @@ end
 
     output: 
 
-      - ρ0/(1.0+exp((r-μ0)/Δr))
+      - A/(1.0+exp((r-r0)/Δr))
 """
 function f_logistic(r::Array{Cdouble,1},r0::Cdouble,Δr::Cdouble;A::Cdouble=1.0)
     A*logistic.(-(r.-r0)/Δr)
@@ -77,10 +77,14 @@ function g_sqrtquad_inv_pos(r::Cdouble,a::Cdouble,b::Cdouble,c::Cdouble)
     if (a<1.0e-14) # isapprox(a,0.0,atol=1.0e-14))
         throw("MINOTAUR: g_sqrtquad_inv_pos recieved a degenerate quadratic, cannot proceed (a=0)")
     end
-    if ((b^2)<(4ac)) 
+    if ((b^2)>(4a*c)) 
         throw("MINOTAUR: g_sqrtquad_inv_pos recieved a degenerate case, cannot proceed (Δ>0)")
     end
-    sqrt((1.0/a)*(r^2 + ((b^2)/(4a)) - c)) - (b/(2a))
+    if (isapprox(r,sqrt(c-((b^2)/(4a))),atol=1.0e-14))
+        return -b/(2a)
+    else
+        return sqrt((1.0/a)*(r^2 + ((b^2)/(4a)) - c)) - (b/(2a))
+    end
 end
 
 """
@@ -96,10 +100,14 @@ function g_sqrtquad_inv_neg(r::Cdouble,a::Cdouble,b::Cdouble,c::Cdouble)
     if (a<1.0e-14) # isapprox(a,0.0,atol=1.0e-14))
         throw("MINOTAUR: g_sqrtquad_inv_neg recieved a degenerate quadratic, cannot proceed (a=0)")
     end
-    if ((b^2)<(4ac)) 
+    if ((b^2)>(4a*c)) 
         throw("MINOTAUR: g_sqrtquad_inv_neg recieved a degenerate case, cannot proceed (Δ>0)")
     end
-    -sqrt((1.0/a)*(r^2 + ((b^2)/(4a)) - c)) - (b/(2a))
+    if (isapprox(r,sqrt(c-((b^2)/(4a))),atol=1.0e-14))
+        return -b/(2a)
+    else
+        return -sqrt((1.0/a)*(r^2 + ((b^2)/(4a)) - c)) - (b/(2a))
+    end
 end
 
 
@@ -138,16 +146,12 @@ function interval(τ_min_0::Cdouble,τ_max_0::Cdouble,a::Cdouble,b::Cdouble,c::C
     elseif ((τ_min<τ0) & (τ_max<τ0)) # g_sqrtquad_inv_neg
         rlow = g_sqrtquad(τ_max,a,b,c)
         rup = g_sqrtquad(τ_min,a,b,c)
-    else # if ((τ_min<τ0) & (τ_max>=τ0)) # g_sqrtquad_inv_neg then g_sqrtquad_inv_neg
+    else # if ((τ_min<τ0) & (τ_max>=τ0)) # g_sqrtquad_inv_neg then g_sqrtquad_inv_pos
         rmid = g_sqrtquad(τ0,a,b,c)
         rlow = g_sqrtquad(τ_min,a,b,c) # g_sqrtquad_inv_neg
-        rup = g_sqrtquad(τ_max,a,b,c)  # g_sqrtquad_inv_neg
-    # else # should never happen
-    #     rmid = g_sqrtquad(τ0,a,b,c)
-    #     rlow = g_sqrtquad(τ_max,a,b,c)
-    #     rup = g_sqrtquad(τ_min,a,b,c)
+        rup = g_sqrtquad(τ_max,a,b,c)  # g_sqrtquad_inv_pos
     end
-    rlow,rmid,rup # if isinf(rmid), integrate over [rlow,rmax], otherwise, integrate of [rmid,rlow] and [rmid,rup]
+    rlow,rmid,rup # if isinf(rmid), integrate over [rlow,rup], otherwise, integrate of [rmid,rlow] and [rmid,rup]
 end
 
 
@@ -177,15 +181,16 @@ function quadrature_fg(f::Function,τ_min::Cdouble,τ_max::Cdouble,a::Cdouble,b:
     val = 0.0
     if (!isapprox(τ_min,τ_max,atol=1.0e-14))
         rlow,rmid,rup = interval(τ_min,τ_max,a,b,c)
-        if (!isinf(rmid))
+        if (isinf(rmid))
             Nr = max(Nr_min,ceil(Int64,(rup-rlow)/Δr0))
             r_disc = collect(LinRange(rlow,rup,Nr));
+            τ0 = -b/(2a);
             if (τ_min>=τ0)
                 τ_disc = [g_sqrtquad_inv_pos(r,a,b,c) for r in r_disc]
             else
                 τ_disc = [g_sqrtquad_inv_neg(r,a,b,c) for r in r_disc[Nr:-1:1]]
             end
-            fs = [f(τ) for τ in τ_disc]
+            fs = [f(g_sqrtquad(τ,a,b,c))  for τ in τ_disc]
 
             # trapezoid rule 
             # sum(0.5*[τ_disc[2]-τ_disc[1]; τ_disc[3:end]-τ_disc[1:end-2]; τ_disc[end]-τ_disc[end-1]].*fs)
@@ -197,13 +202,13 @@ function quadrature_fg(f::Function,τ_min::Cdouble,τ_max::Cdouble,a::Cdouble,b:
             Nr1 = max(ceil(Int64,Nr_min/2),ceil(Int64,(rlow-rmid)/Δr0))
             r_disc_1 = collect(LinRange(rmid,rlow,Nr1));
             τ_disc_1 = [g_sqrtquad_inv_neg(r,a,b,c) for r in r_disc_1[Nr1:-1:1]]
-            fs_1 = [f(τ) for τ in τ_disc_1]
+            fs_1 = [f(g_sqrtquad(τ,a,b,c)) for τ in τ_disc_1]
 
             # increasing g 
             Nr2 = max(ceil(Int64,Nr_min/2),ceil(Int64,(rup-rmid)/Δr0))
-            r_disc_2 = collect(LinRange(rmid,rlup,Nr2));
+            r_disc_2 = collect(LinRange(rmid,rup,Nr2));
             τ_disc_2 = [g_sqrtquad_inv_pos(r,a,b,c) for r in r_disc_2]
-            fs_2 = [f(τ) for τ in τ_disc_2]
+            fs_2 = [f(g_sqrtquad(τ,a,b,c)) for τ in τ_disc_2]
 
             # trapezoid rule 
             # sum(0.5*[τ_disc[2]-τ_disc[1]; τ_disc[3:end]-τ_disc[1:end-2]; τ_disc[end]-τ_disc[end-1]].*fs)
