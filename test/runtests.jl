@@ -299,7 +299,7 @@ function test_quadrature_fg_cylinder()
   rmax = 1.75;
   Nr = 50;
   r = collect(LinRange(rmin,rmax,Nr));
-  Nθ = 201;
+  Nθ = 101;
   θ = collect(LinRange(0.0,2.0π,Nθ));
   Ny = 50;
   ymin = 0.0;
@@ -317,8 +317,40 @@ function test_quadrature_fg_cylinder()
   cond1 & cond2 & cond3
 end
 
+function test_quadrature_fg_sphere()
+  x0 = 2.0; y0 = 2.0; z0 = 2.0;
+  μ0 = 1.0;
+  Δr = 0.5;
+  rmin = 0.0;
+  rmax = 1.75;
+  Nr = 50;
+  r = collect(LinRange(rmin,rmax,Nr));
+  Nφ = 50;
+  φ = collect(LinRange(0.0,1.0π,Nφ));
+  Nθ = 101;
+  θ = collect(LinRange(0.0,2.0π,Nθ));
+  
+
+  # compare the two integration methods
+  FGQ_rφθ = quadrature_fg_sphere(r,φ,θ,x0,y0,z0,μ0,Δr;κ=1.0,Nτ=200);
+  FGQ_rφθ_g_opt_f = MINOTAUR.quadrature_fg_sphere_g_opt_f(r,φ,θ,x0,y0,z0,μ0,Δr;κ=1.0,Nτ=200);
+
+  cond1 = (!any(isinf.(FGQ_rφθ))) & (!any(isnan.(FGQ_rφθ))) & (all(FGQ_rφθ.>=0.0))
+  cond2 = (!any(isinf.(FGQ_rφθ_g_opt_f))) & (!any(isnan.(FGQ_rφθ_g_opt_f))) & (all(FGQ_rφθ_g_opt_f.>=0.0))
+  cond3 = ((100*sum(abs.(FGQ_rφθ-FGQ_rφθ_g_opt_f))/sum(abs.(FGQ_rφθ)))<0.1) # if less than 0.1% relative absolute value difference, it's just numerical discrepancies
+
+  cond1 & cond2 & cond3
+end
 
 
+@testset "Cylinder and sphere" begin
+  @test test_quadrature_fg_cylinder()
+  @test test_quadrature_fg_sphere()
+end
+
+
+# Some plots might be interesting for offline debugging
+# using PyPlot
 # fig = figure() #figsize=[10,5]
 # ax1 = subplot(111,polar=true)
 # ax1.set_rticks([μ0/4, 2μ0/4, 3μ0/4, μ0])

@@ -70,7 +70,7 @@ end
       - FGQ_rφθ: 3D array containing the quadrature for each discretization nodes (r,φ,θ)
 """
 function quadrature_fg_sphere(r::Array{Cdouble,1},φ::Array{Cdouble,1},θ::Array{Cdouble,1},x0::Cdouble,y0::Cdouble,z0::Cdouble,μ0::Cdouble,Δr::Cdouble;κ::Cdouble=5.0,Nτ::Int64=20)
-    # how far out of the sample should we discretize
+    # square radius of the sphere 
     R2 = (μ0 + κ*Δr)^2
 
     # compute quadrature for each discretization nodes (r,φ,θ)
@@ -98,6 +98,40 @@ function quadrature_fg_sphere(r::Array{Cdouble,1},φ::Array{Cdouble,1},θ::Array
                     ρ_disc = f_logistic(r_param,μ0,Δr;A=1.0);
                     # quadrature f(g(τ))
                     FGQ_rφθ[n,j,k] = quadrature_fg(ρ_disc,τ_disc)
+                end
+            end
+        end
+    end
+
+    # return the quadrature for each discretization nodes of the sphere 
+    FGQ_rφθ
+end
+
+
+function quadrature_fg_sphere_g_opt_f(r::Array{Cdouble,1},φ::Array{Cdouble,1},θ::Array{Cdouble,1},x0::Cdouble,y0::Cdouble,z0::Cdouble,μ0::Cdouble,Δr::Cdouble;κ::Cdouble=5.0,Nτ::Int64=20)
+    # square radius of the sphere 
+    R2 = (μ0 + κ*Δr)^2
+
+    # compute quadrature for each discretization nodes (r,φ,θ)
+    FGQ_rφθ = zeros(Cdouble,length(r),length(φ),length(θ));
+    fint = (x::Cdouble->f_logistic(x,μ0,Δr;A=1.0))
+    for n in eachindex(r)
+        rm2 = r[n]^2
+        if (R2>=rm2)
+            for j in eachindex(φ)
+                zm   = r[n]*cos(φ[j])
+                rxym = r[n]*sin(φ[j])
+                for k in eachindex(θ)
+                    # cartesian coordinates
+                    xm = rxym*cos(θ[k])
+                    ym = rxym*sin(θ[k])
+
+                    # quadrature ∫_0^{τ_root} f(g(τ)) dτ
+                    τ_root,α,β,γ = τ_root_sphere(x0,y0,z0,xm,ym,zm,R2,rm2) # if b^2≃4*a*c, then the center of the cylinder is on the parametric line 
+                    a = α^2 + β^2 + γ^2
+                    b = 2.0*(α*xm + β*ym + γ*zm)
+                    c = xm^2 + ym^2 + zm^2;
+                    FGQ_rφθ[n,j,k] = quadrature_fg(fint,0.0,τ_root,a,b,c,Δr/5.0;Nr_min=Nτ) 
                 end
             end
         end
