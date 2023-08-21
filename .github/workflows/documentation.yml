@@ -3,7 +3,7 @@ name: Documentation
 on:
   push:
     branches:
-      - toto # master # when ready, change to the actual branch
+      - master 
     tags: '*'
   pull_request:
 
