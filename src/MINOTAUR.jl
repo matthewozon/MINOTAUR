@@ -10,9 +10,10 @@ This is the [`MINOTAUR`](@ref), it contains
 * [`MINOTAUR.quadrature_fg`](@ref)
 * [`MINOTAUR.τ_root_sphere`](@ref)
 * [`MINOTAUR.quadrature_fg_sphere`](@ref)
+* [`MINOTAUR.quadrature_fg_sphere_g_opt_f`](@ref)
 * [`MINOTAUR.τ_root_cylinder`](@ref)
 * [`MINOTAUR.quadrature_fg_cylinder`](@ref)
-
+* [`MINOTAUR.quadrature_fg_cylinder_g_opt_f`](@ref)
 
 
     Attempt to optimize the discretization for the quadrature to compute the integral

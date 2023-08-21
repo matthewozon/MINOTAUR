@@ -107,7 +107,15 @@ function quadrature_fg_sphere(r::Array{Cdouble,1},φ::Array{Cdouble,1},θ::Array
     FGQ_rφθ
 end
 
+"""
+    quadrature_fg_sphere_g_opt_f(r::Array{Cdouble,1},θ::Array{Cdouble,1},y::Array{Cdouble,1},x0::Cdouble,y0::Cdouble,z0::Cdouble,μ0::Cdouble,Δr::Cdouble;κ::Cdouble=5.0,Nτ::Int64=20)
 
+    quadrature evaluating the integral ∫_{τmin}^{τmax} f(g(τ)) dτ for a sphere of radius μ0 
+
+    Contrary to quadrature_fg_sphere the quadrature is adjusted to f instead of g
+
+    see quadrature_fg_sphere and quadrature_fg(f::Function,τ_min::Cdouble,τ_max::Cdouble,a::Cdouble,b::Cdouble,c::Cdouble,Δr0::Cdouble;Nr_min::Int64=20)
+"""
 function quadrature_fg_sphere_g_opt_f(r::Array{Cdouble,1},φ::Array{Cdouble,1},θ::Array{Cdouble,1},x0::Cdouble,y0::Cdouble,z0::Cdouble,μ0::Cdouble,Δr::Cdouble;κ::Cdouble=5.0,Nτ::Int64=20)
     # square radius of the sphere 
     R2 = (μ0 + κ*Δr)^2

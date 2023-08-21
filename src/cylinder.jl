@@ -74,7 +74,7 @@ function quadrature_fg_cylinder(r::Array{Cdouble,1},θ::Array{Cdouble,1},y::Arra
     # square radius of the cylinder
     R2 = (μ0 + κ*Δr)^2
 
-    # compute the gain
+    # compute quadrature for each discretization nodes (r,θ,y)
     FGQ_rθy = zeros(Cdouble,length(r),length(θ),length(y));
     for n in eachindex(r)
         rm2 = r[n]^2
@@ -104,46 +104,21 @@ function quadrature_fg_cylinder(r::Array{Cdouble,1},θ::Array{Cdouble,1},y::Arra
     FGQ_rθy
 end
 
-# function quadrature_fg_cylinder(r::Array{Cdouble,1},θ::Array{Cdouble,1},y::Array{Cdouble,1},x0::Cdouble,y0::Cdouble,z0::Cdouble,μ0::Cdouble,Δr::Cdouble;κ::Cdouble=5.0,Nτ::Int64=20)
-#     # square radius of the cylinder
-#     R2 = (μ0 + κ*Δr)^2
 
-#     # compute the gain
-#     FGQ_rθy = zeros(Cdouble,length(r),length(θ),length(y));
-#     for n in eachindex(r)
-#         rm2 = r[n]^2
-#         if (R2>=rm2)
-#             for j in eachindex(θ)
-#                 # cartesian coordinates
-#                 xm  = r[n]*sin(θ[j])
-#                 zm  = r[n]*cos(θ[j])
-#                 for k in eachindex(y)
-#                     # quadrature ∫_0^{τ_root} f(g(τ)) dτ
-#                     τ_root,α,γ = τ_root_cylinder(x0,y0,z0,xm,y[k],zm,R2,rm2)
-#                     # this is not optimal, the details are at the transition, so, the discretization of τ should reflect that
-#                     τ_disc = collect(LinRange(0.0,τ_root,Nτ)) 
-#                     r_param = sqrt.((xm.+α*τ_disc).^2 .+ (zm.+γ*τ_disc).^2)
-#                     # a = α^2 + γ^2
-#                     # b = 2.0*(α*xm + γ*zm)
-#                     # c = xm^2 + zm^2;
-#                     # r_param = g_sqrtquad.(τ_disc,a,b,c)
-#                     ρ_disc = f_logistic(r_param,μ0,Δr;A=1.0);
-#                     FGQ_rθy[n,j,k] = quadrature_fg(ρ_disc,τ_disc)
-#                 end
-#             end
-#         end
-#     end
+"""
+    quadrature_fg_cylinder_g_opt_f(r::Array{Cdouble,1},θ::Array{Cdouble,1},y::Array{Cdouble,1},x0::Cdouble,y0::Cdouble,z0::Cdouble,μ0::Cdouble,Δr::Cdouble;κ::Cdouble=5.0,Nτ::Int64=20)
 
-#     # return 
-#     FGQ_rθy
-# end
+    quadrature evaluating the integral ∫_{τmin}^{τmax} f(g(τ)) dτ for a cylinder of radius μ0 (along the axis Oy)
 
+    Contrary to quadrature_fg_cylinder the quadrature is adjusted to f instead of g
 
+    see quadrature_fg_cylinder and quadrature_fg(f::Function,τ_min::Cdouble,τ_max::Cdouble,a::Cdouble,b::Cdouble,c::Cdouble,Δr0::Cdouble;Nr_min::Int64=20)
+"""
 function quadrature_fg_cylinder_g_opt_f(r::Array{Cdouble,1},θ::Array{Cdouble,1},y::Array{Cdouble,1},x0::Cdouble,y0::Cdouble,z0::Cdouble,μ0::Cdouble,Δr::Cdouble;κ::Cdouble=5.0,Nτ::Int64=20)
     # square radius of the cylinder
     R2 = (μ0 + κ*Δr)^2
 
-    # compute the gain
+    # compute quadrature for each discretization nodes (r,θ,y)
     FGQ_rθy = zeros(Cdouble,length(r),length(θ),length(y));
     fint = (x::Cdouble->f_logistic(x,μ0,Δr;A=1.0))
     for n in eachindex(r)
