@@ -47,6 +47,9 @@ end
 
       - A/(1.0+exp((r-r0)/Δr))
 """
+function f_logistic(r::Cdouble,r0::Cdouble,Δr::Cdouble;A::Cdouble=1.0)
+    A*logistic(-(r.-r0)/Δr)
+end
 function f_logistic(r::Array{Cdouble,1},r0::Cdouble,Δr::Cdouble;A::Cdouble=1.0)
     A*logistic.(-(r.-r0)/Δr)
 end
@@ -61,7 +64,11 @@ end
     computes √(a*τ^2+b*τ+c) and should be called with a>0, and b^2<4ac so that a*τ^2+b*τ+c⩾0
 """
 function g_sqrtquad(τ::Cdouble,a::Cdouble,b::Cdouble,c::Cdouble)
-    sqrt(a*τ^2+b*τ+c)
+    if (isapprox(a*τ^2+b*τ+c,0.0,atol=1.0e-14))
+        return 0.0
+    else
+        return sqrt(a*τ^2+b*τ+c)
+    end
 end
 
 """
@@ -77,13 +84,17 @@ function g_sqrtquad_inv_pos(r::Cdouble,a::Cdouble,b::Cdouble,c::Cdouble)
     if (a<1.0e-14) # isapprox(a,0.0,atol=1.0e-14))
         throw("MINOTAUR: g_sqrtquad_inv_pos recieved a degenerate quadratic, cannot proceed (a=0)")
     end
-    if ((b^2)>(4a*c)) 
+    if ((b^2)>((4a*c)+1.0e-14)) 
         throw("MINOTAUR: g_sqrtquad_inv_pos recieved a degenerate case, cannot proceed (Δ>0)")
     end
-    if (isapprox(r,sqrt(c-((b^2)/(4a))),atol=1.0e-14))
-        return -b/(2a)
+    if (isapprox(b^2,4*a*c,atol=1.0e-14))
+        return (r/sqrt(a)) - b/(2a)
     else
-        return sqrt((1.0/a)*(r^2 + ((b^2)/(4a)) - c)) - (b/(2a))
+        if (isapprox(r^2,c-((b^2)/(4a)),atol=1.0e-14)) # (isapprox(r,sqrt(c-((b^2)/(4a))),atol=1.0e-14))
+            return -b/(2a)
+        else
+            return sqrt((1.0/a)*(r^2 + ((b^2)/(4a)) - c)) - (b/(2a))
+        end
     end
 end
 
@@ -100,13 +111,17 @@ function g_sqrtquad_inv_neg(r::Cdouble,a::Cdouble,b::Cdouble,c::Cdouble)
     if (a<1.0e-14) # isapprox(a,0.0,atol=1.0e-14))
         throw("MINOTAUR: g_sqrtquad_inv_neg recieved a degenerate quadratic, cannot proceed (a=0)")
     end
-    if ((b^2)>(4a*c)) 
+    if ((b^2)>((4a*c)+1.0e-14)) 
         throw("MINOTAUR: g_sqrtquad_inv_neg recieved a degenerate case, cannot proceed (Δ>0)")
     end
-    if (isapprox(r,sqrt(c-((b^2)/(4a))),atol=1.0e-14))
-        return -b/(2a)
+    if (isapprox(b^2,4*a*c,atol=1.0e-14))
+        return (-r/sqrt(a)) - b/(2a)
     else
-        return -sqrt((1.0/a)*(r^2 + ((b^2)/(4a)) - c)) - (b/(2a))
+        if (isapprox(r^2,c-((b^2)/(4a)),atol=1.0e-14)) # (isapprox(r,sqrt(c-((b^2)/(4a))),atol=1.0e-14))
+            return -b/(2a)
+        else
+            return -sqrt((1.0/a)*(r^2 + ((b^2)/(4a)) - c)) - (b/(2a))
+        end
     end
 end
 

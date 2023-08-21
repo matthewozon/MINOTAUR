@@ -197,3 +197,147 @@ end
   @test test_interval()
   @test test_quadrature()
 end
+
+
+function test_τ_root_cylinder()
+  # case 1
+  x0 = 1.0; y0 = 0.0; z0 = 1.0
+  xm = 0.0; ym = 0.0; zm = 0.0; rm2 = xm^2+zm^2
+  R2 = 1.0;
+  dist_c,α,γ = τ_root_cylinder(x0,y0,z0,xm,ym,zm,R2,rm2)
+  cond1 = (isapprox(dist_c,1.0,atol=1.0e-14)) & (isapprox(α,sqrt(2)/2,atol=1.0e-14)) & (isapprox(γ,sqrt(2)/2,atol=1.0e-14))
+
+  # case 2
+  x0 = 1.0; y0 = 0.0; z0 = 0.0
+  xm = 0.0; ym = 0.0; zm = 0.0; rm2 = xm^2+zm^2
+  R2 = 1.0;
+  dist_c,α,γ = τ_root_cylinder(x0,y0,z0,xm,ym,zm,R2,rm2)
+  cond2 = (isapprox(dist_c,1.0,atol=1.0e-14)) & (isapprox(α,1.0,atol=1.0e-14)) & (isapprox(γ,0.0,atol=1.0e-14))
+
+  # case 3
+  x0 = 1.0; y0 = 0.0; z0 = 1.0
+  xm = 0.0; ym = 0.0; zm = 1.0; rm2 = xm^2+zm^2
+  R2 = 1.0;
+  dist_c,α,γ = τ_root_cylinder(x0,y0,z0,xm,ym,zm,R2,rm2)
+  cond3 = (isapprox(dist_c,0.0,atol=1.0e-14)) & (isapprox(α,1.0,atol=1.0e-14)) & (isapprox(γ,0.0,atol=1.0e-14))
+
+  # case 4
+  x0 = 1.0; y0 = 0.0; z0 = 1.0
+  xm = 1.0; ym = 0.0; zm = 0.0; rm2 = xm^2+zm^2
+  R2 = 1.0;
+  dist_c,α,γ = τ_root_cylinder(x0,y0,z0,xm,ym,zm,R2,rm2)
+  cond4 = (isapprox(dist_c,0.0,atol=1.0e-14)) & (isapprox(α,0.0,atol=1.0e-14)) & (isapprox(γ,1.0,atol=1.0e-14))
+
+  # case 5
+  x0 = 1.0; y0 = 0.0; z0 = 1.0
+  xm = 0.5; ym = 0.0; zm = 0.5; rm2 = xm^2+zm^2
+  R2 = 1.0;
+  dist_c,α,γ = τ_root_cylinder(x0,y0,z0,xm,ym,zm,R2,rm2)
+  cond5 = (isapprox(dist_c,sqrt(R2)-sqrt(rm2),atol=1.0e-14)) & (isapprox(α,sqrt(2)/2,atol=1.0e-14)) & (isapprox(γ,sqrt(2)/2,atol=1.0e-14))
+
+  cond1 & cond2 & cond3 & cond4 & cond5
+end
+
+
+function test_τ_root_sphere()
+  # case 1
+  x0 = 1.0; y0 = 0.0; z0 = 1.0
+  xm = 0.0; ym = 0.0; zm = 0.0; rm2 = xm^2+ym^2+zm^2
+  R2 = 1.0;
+  dist_c,α,β,γ = τ_root_sphere(x0,y0,z0,xm,ym,zm,R2,rm2)
+  cond1 = (isapprox(dist_c,1.0,atol=1.0e-14)) & (isapprox(α,sqrt(2)/2,atol=1.0e-14)) & (isapprox(β,0.0,atol=1.0e-14)) & (isapprox(γ,sqrt(2)/2,atol=1.0e-14))
+
+  # case 2
+  x0 = 1.0; y0 = 0.0; z0 = 0.0
+  xm = 0.0; ym = 0.0; zm = 0.0; rm2 = xm^2+ym^2+zm^2
+  R2 = 1.0;
+  dist_c,α,β,γ = τ_root_sphere(x0,y0,z0,xm,ym,zm,R2,rm2)
+  cond2 = (isapprox(dist_c,1.0,atol=1.0e-14)) & (isapprox(α,1.0,atol=1.0e-14)) & (isapprox(β,0.0,atol=1.0e-14)) & (isapprox(γ,0.0,atol=1.0e-14))
+
+  # case 3
+  x0 = 1.0; y0 = 0.0; z0 = 1.0
+  xm = 0.0; ym = 0.0; zm = 1.0; rm2 = xm^2+ym^2+zm^2
+  R2 = 1.0;
+  dist_c,α,β,γ = τ_root_sphere(x0,y0,z0,xm,ym,zm,R2,rm2)
+  cond3 = (isapprox(dist_c,0.0,atol=1.0e-14)) & (isapprox(α,1.0,atol=1.0e-14)) & (isapprox(β,0.0,atol=1.0e-14)) & (isapprox(γ,0.0,atol=1.0e-14))
+
+  # case 4
+  x0 = 1.0; y0 = 0.0; z0 = 1.0
+  xm = 1.0; ym = 0.0; zm = 0.0; rm2 = xm^2+ym^2+zm^2
+  R2 = 1.0;
+  dist_c,α,β,γ = τ_root_sphere(x0,y0,z0,xm,ym,zm,R2,rm2)
+  cond4 = (isapprox(dist_c,0.0,atol=1.0e-14)) & (isapprox(α,0.0,atol=1.0e-14)) & (isapprox(β,0.0,atol=1.0e-14)) & (isapprox(γ,1.0,atol=1.0e-14))
+
+  # case 5
+  x0 = 1.0; y0 = 0.0; z0 = 1.0
+  xm = 0.5; ym = 0.0; zm = 0.5; rm2 = xm^2+ym^2+zm^2
+  R2 = 1.0;
+  dist_c,α,β,γ = τ_root_sphere(x0,y0,z0,xm,ym,zm,R2,rm2)
+  cond5 = (isapprox(dist_c,sqrt(R2)-sqrt(rm2),atol=1.0e-14)) & (isapprox(α,sqrt(2)/2,atol=1.0e-14)) & (isapprox(β,0.0,atol=1.0e-14)) & (isapprox(γ,sqrt(2)/2,atol=1.0e-14))
+
+  # case 6
+  x0 = 1.0; y0 = 1.0; z0 = 1.0
+  xm = 0.5; ym = 0.5; zm = 0.5; rm2 = xm^2+ym^2+zm^2
+  R2 = 1.0;
+  dist_c,α,β,γ = τ_root_sphere(x0,y0,z0,xm,ym,zm,R2,rm2)
+  cond6 = (isapprox(dist_c,sqrt(R2)-sqrt(rm2),atol=1.0e-14)) & (isapprox(α,sqrt(3)/3,atol=1.0e-14)) & (isapprox(β,sqrt(3)/3,atol=1.0e-14)) & (isapprox(γ,sqrt(3)/3,atol=1.0e-14))
+  
+  cond1 & cond2 & cond3 & cond4 & cond5 & cond6
+end
+
+
+@testset "Distance" begin
+  @test test_τ_root_cylinder()
+  @test test_τ_root_sphere()
+end
+
+function test_quadrature_fg_cylinder()
+  x0 = 2.0; y0 = 2.0; z0 = 2.0;
+  μ0 = 1.0;
+  Δr = 0.5;
+  rmin = 0.0;
+  rmax = 1.75;
+  Nr = 50;
+  r = collect(LinRange(rmin,rmax,Nr));
+  Nθ = 201;
+  θ = collect(LinRange(0.0,2.0π,Nθ));
+  Ny = 50;
+  ymin = 0.0;
+  ymax = 4.0;
+  y = collect(LinRange(ymin,ymax,Ny));
+
+  # compare the two integration methods
+  FGQ_rθy = quadrature_fg_cylinder(r,θ,y,x0,y0,z0,μ0,Δr;κ=1.0,Nτ=200);
+  FGQ_rθy_g_opt_f = MINOTAUR.quadrature_fg_cylinder_g_opt_f(r,θ,y,x0,y0,z0,μ0,Δr;κ=1.0,Nτ=200);
+
+  cond1 = (!any(isinf.(FGQ_rθy))) & (!any(isnan.(FGQ_rθy))) & (all(FGQ_rθy.>=0.0))
+  cond2 = (!any(isinf.(FGQ_rθy_g_opt_f))) & (!any(isnan.(FGQ_rθy_g_opt_f))) & (all(FGQ_rθy_g_opt_f.>=0.0))
+  cond3 = ((100*sum(abs.(FGQ_rθy-FGQ_rθy_g_opt_f))/sum(abs.(FGQ_rθy)))<0.1) # if less than 0.1% relative absolute value difference, it's just numerical discrepancies
+
+  cond1 & cond2 & cond3
+end
+
+
+
+# fig = figure() #figsize=[10,5]
+# ax1 = subplot(111,polar=true)
+# ax1.set_rticks([μ0/4, 2μ0/4, 3μ0/4, μ0])
+# yticks(fontsize=12)
+# xticks(fontsize=12)
+# ax1.set_rlabel_position(35.0)
+# ax1.plot(atan(x0,z0)*ones(Cdouble,2),[0.0; μ0], color="red",label="\$\\theta=45\$")
+# # pcm1 = ax1.pcolormesh(θ,r,100abs.(FGQ_rθy_g_opt_f[:,:,3]-FGQ_rθy[:,:,3])./FGQ_rθy[:,:,3],edgecolors="face")
+# pcm1 = ax1.pcolormesh(θ,r,100abs.(FGQ_rθy_g_opt_f[:,:,3]-FGQ_rθy[:,:,3])./FGQ_rθy_g_opt_f[:,:,3],edgecolors="face")
+# cax1 = fig.add_axes([0.03, .1, 0.02, 0.3])
+# cb1 = fig.colorbar(pcm1, orientation="vertical", cax=cax1, shrink=0.6)
+# cb1.set_label("relative error [%]", fontsize=12)
+# cb1.ax.tick_params(labelsize=12)
+# ax1.legend(loc="lower left", bbox_to_anchor=(.5 + cos(atan(x0,z0))/2, .5 + sin(atan(x0,z0))/2),fontsize=12)
+# tight_layout(pad=0.5, w_pad=0.5, h_pad=0.5)
+
+
+# figure(); plot(r,FGQ_rθy[:,7,3]); plot(r,FGQ_rθy_g[:,7,3]); plot(r,FGQ_rθy_g_opt_f[:,7,3]); 
+# figure(); plot(r,FGQ_rθy[:,17,3]); plot(r,FGQ_rθy_g[:,17,3]); plot(r,FGQ_rθy_g_opt_f[:,17,3]); 
+# figure(); plot(r,FGQ_rθy[:,7,3]-FGQ_rθy_g[:,7,3]); plot(r,FGQ_rθy[:,7,3]-FGQ_rθy_g_opt_f[:,7,3]); plot(r,FGQ_rθy_g[:,7,3]-FGQ_rθy_g_opt_f[:,7,3])
+# figure(); plot(r,FGQ_rθy[:,17,3]-FGQ_rθy_g[:,17,3]); plot(r,FGQ_rθy[:,17,3]-FGQ_rθy_g_opt_f[:,17,3]); plot(r,FGQ_rθy_g[:,17,3]-FGQ_rθy_g_opt_f[:,17,3])
+# figure(); plot(r,100.0*(FGQ_rθy[:,17,3]-FGQ_rθy_g_opt_f[:,17,3])./FGQ_rθy[:,17,3]); plot(r,100.0*(FGQ_rθy_g[:,17,3]-FGQ_rθy_g_opt_f[:,17,3])./FGQ_rθy[:,17,3])
