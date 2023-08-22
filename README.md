@@ -60,14 +60,17 @@ In this figure: left) the discretization adjusted for $f$ is plotted against the
 
 ![quadrature_wrt_nb_nodes](https://github.com/matthewozon/MINOTAUR/assets/7929598/6fc90605-a205-4ae6-94f7-fc4059b6c0e8)
 
-## Application to different function 
+## Application to different function  (using 100 discretization nodes)
 
-|                           |$f(r)=\sin r$   	        |$f(r)=\cos r$   	        |$f(r)=r^2$   	          |$f(r)=\frac{1}{1+r}$   	|
-|---                        |---	                    |---	                    |---	                    |---	                    |
-|Method                     |$g(\tau)=\log(\tau)$   	|$g(\tau)=\log(\tau)$   	|$g(\tau)=\log(\tau)$   	|$g(\tau) = e^{-\tau}$   	|
-|Analytical                 |   	                    |   	                    |   	                    |   	                    |
-|linear quadrature          |   	                    |   	                    |   	                    |      	                  |
-|adjusted quadrature        |   	                    |   	                    |   	                    |   	                    |
+Some cases are favorable to the adjusted discretization, but some are better suited for linear discretization. 
+
+|                                |$f(r)=\sin r$  	        |$f(r)=\cos r$   	        |$f(r)=r^2$   	          |$f(r)=\frac{1}{r}$   	| $f(r)=\frac{1}{r}$  |
+|---                             |---	                    |---	                    |---	                    |---	                  |---                  | 
+|                                |$g(\tau)=\log(\tau)$   	|$g(\tau)=\log(\tau)$   	|$g(\tau)=\log(\tau)$   	|$g(\tau) = \sqrt{\tau}$| $g(\tau)=\tan \tau$ |
+|Method                          |$[e^{-\frac{3\pi}{4}-2\pi},e^{\frac{\pi}{4}}]$   	|$[e^{-\frac{3\pi}{4}-2\pi},e^{\frac{\pi}{4}}]$   	|$[\frac{1}{4},2]$   	|$[\frac{1}{100},1]$   	| $[\frac{\pi}{100},\frac{\pi}{4}]$ |
+|Analytical                      |   0.0                  |   1.551                 |   0.5147                |  1.8 	                    |3.1140 |
+|linear quadrature error         |   0.015                |   0.014                 |   0.0003                |  0.0004                   | 0.005 |
+|adjusted quadrature error       |   0.001                |   0.001                 |   0.0001                |  0.0040                   | 0.008 |
 
 
 # Install
