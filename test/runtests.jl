@@ -191,12 +191,236 @@ function test_quadrature()
 end
 
 
+function test_quadrature_bijection()
+  # sin(log(x))
+  f     = (r::Cdouble->sin(r))
+  g     = (τ::Cdouble->log(τ))
+  g_inv = (r::Cdouble->exp(r))
+
+  f_lin     = (r::Cdouble->sin(log(r)))
+  g_lin     = (τ::Cdouble->τ)
+  g_lin_inv = (r::Cdouble->r)
+
+  FG    = (τ::Cdouble->0.5τ*(sin(log(τ)) - cos(log(τ)))) 
+
+  τ_min = exp(-3π/4-2π) # 0.001 
+  τ_max = exp(π/4) # 2.0
+  Δr0 = π/2.0 # big enough so that the optional argument Nr_min is the number of discretization nodes to compute the quadrature
+  Nr_min = 100;
+
+  # adjusted quadrature
+  int_fg = quadrature_fg(f,g,g_inv,τ_min,τ_max,Δr0;Nr_min=Nr_min)
+
+  # linear quadrature
+  int_fg_lin = quadrature_fg(f_lin,g_lin,g_lin_inv,τ_min,τ_max,Δr0;Nr_min=Nr_min)
+
+  # integral value
+  val = FG(τ_max) - FG(τ_min)
+
+  err_fg  = int_fg-val
+  err_lin = int_fg_lin-val
+
+  cond1 = (isapprox(err_fg,0.0,atol=2.0*(τ_max-τ_min)/Nr_min)) & (isapprox(err_lin,0.0,atol=2.0*(τ_max-τ_min)/Nr_min))
+
+
+  # cos(log(x))
+  f     = (r::Cdouble->cos(r))
+  g     = (τ::Cdouble->log(τ))
+  g_inv = (r::Cdouble->exp(r))
+
+  f_lin     = (r::Cdouble->cos(log(r)))
+  g_lin     = (τ::Cdouble->τ)
+  g_lin_inv = (r::Cdouble->r)
+
+  FG    = (τ::Cdouble->0.5τ*(sin(log(τ)) + cos(log(τ)))) 
+
+  τ_min = exp(-3π/4-2π) # 0.001 
+  τ_max = exp(π/4) # 2.0
+  Δr0 = π/2.0 # big enough so that the optional argument Nr_min is the number of discretization nodes to compute the quadrature
+  Nr_min = 100;
+
+  # adjusted quadrature
+  int_fg = quadrature_fg(f,g,g_inv,τ_min,τ_max,Δr0;Nr_min=Nr_min)
+
+  # linear quadrature
+  int_fg_lin = quadrature_fg(f_lin,g_lin,g_lin_inv,τ_min,τ_max,Δr0;Nr_min=Nr_min)
+
+  # integral value
+  val = FG(τ_max) - FG(τ_min)
+
+  err_fg  = int_fg-val
+  err_lin = int_fg_lin-val
+
+  cond2 = (isapprox(err_fg,0.0,atol=2.0*(τ_max-τ_min)/Nr_min)) & (isapprox(err_lin,0.0,atol=2.0*(τ_max-τ_min)/Nr_min))
+
+
+  # (log(x))^2
+  f     = (r::Cdouble->r^2)
+  g     = (τ::Cdouble->log(τ))
+  g_inv = (r::Cdouble->exp(r))
+
+  f_lin     = (r::Cdouble->(log(r))^2)
+  g_lin     = (τ::Cdouble->τ)
+  g_lin_inv = (r::Cdouble->r)
+
+  FG    = (τ::Cdouble->τ*((log(τ))^2) - 2τ*log(τ) + 2τ) 
+
+  τ_min = 0.25 # 0.001 
+  τ_max = 2.0 # 2.0
+  Δr0   = 0.5 # big enough so that the optional argument Nr_min is the number of discretization nodes to compute the quadrature
+  Nr_min = 100;
+
+  # adjusted quadrature
+  int_fg = quadrature_fg(f,g,g_inv,τ_min,τ_max,Δr0;Nr_min=Nr_min)
+
+  # linear quadrature
+  int_fg_lin = quadrature_fg(f_lin,g_lin,g_lin_inv,τ_min,τ_max,Δr0;Nr_min=Nr_min)
+
+  # integral value
+  val = FG(τ_max) - FG(τ_min)
+
+  err_fg  = int_fg-val
+  err_lin = int_fg_lin-val
+
+  cond3 = (isapprox(err_fg,0.0,atol=2.0*(τ_max-τ_min)/Nr_min)) & (isapprox(err_lin,0.0,atol=2.0*(τ_max-τ_min)/Nr_min))
+
+
+
+  # 1/sqrt(x), x>0.0
+  f     = (r::Cdouble->1.0/r)
+  g     = (τ::Cdouble->sqrt(τ))
+  g_inv = (r::Cdouble->r^2)
+
+  f_lin     = (r::Cdouble->1.0/sqrt(r))
+  g_lin     = (τ::Cdouble->τ)
+  g_lin_inv = (r::Cdouble->r)
+
+  FG    = (τ::Cdouble->2sqrt(τ)) 
+
+  τ_min = 0.01
+  τ_max = 1.0
+  Δr0   = 0.5 # big enough so that the optional argument Nr_min is the number of discretization nodes to compute the quadrature
+  Nr_min = 100;
+
+  # adjusted quadrature
+  int_fg = quadrature_fg(f,g,g_inv,τ_min,τ_max,Δr0;Nr_min=Nr_min)
+
+  # linear quadrature
+  int_fg_lin = quadrature_fg(f_lin,g_lin,g_lin_inv,τ_min,τ_max,Δr0;Nr_min=Nr_min)
+
+  # integral value
+  val = FG(τ_max) - FG(τ_min)
+
+  err_fg  = int_fg-val
+  err_lin = int_fg_lin-val
+
+  cond4 = (isapprox(err_fg,0.0,atol=2.0*(τ_max-τ_min)/Nr_min)) & (isapprox(err_lin,0.0,atol=2.0*(τ_max-τ_min)/Nr_min))
+
+
+
+
+  # 1/tan(x), x>0.0
+  f     = (r::Cdouble->1.0/r)
+  g     = (τ::Cdouble->tan(τ))
+  g_inv = (r::Cdouble->atan(r))
+
+  f_lin     = (r::Cdouble->1.0/tan(r))
+  g_lin     = (τ::Cdouble->τ)
+  g_lin_inv = (r::Cdouble->r)
+
+  FG    = (τ::Cdouble->log(abs(sin(τ)))) 
+
+  τ_min = π/100.0
+  τ_max = π/4.0
+
+  Δr0   = 0.5 # big enough so that the optional argument Nr_min is the number of discretization nodes to compute the quadrature
+  Nr_min = 100;
+
+  # adjusted quadrature
+  int_fg = quadrature_fg(f,g,g_inv,τ_min,τ_max,Δr0;Nr_min=Nr_min)
+
+  # linear quadrature
+  int_fg_lin = quadrature_fg(f_lin,g_lin,g_lin_inv,τ_min,τ_max,Δr0;Nr_min=Nr_min)
+
+  # integral value
+  val = FG(τ_max) - FG(τ_min)
+
+  err_fg  = int_fg-val
+  err_lin = int_fg_lin-val
+
+  cond5 = (isapprox(err_fg,0.0,atol=2.0*(τ_max-τ_min)/Nr_min)) & (isapprox(err_lin,0.0,atol=2.0*(τ_max-τ_min)/Nr_min))
+
+  cond1 & cond2 & cond3 & cond4 & cond5
+end
+
 @testset "Discretization" begin
   @test test_logistic()
   @test test_g()
   @test test_interval()
   @test test_quadrature()
+  @test test_quadrature_bijection()
 end
+
+
+# dependence of the error against the number of discfretization node
+# f     = (r::Cdouble->sin(r))
+# g     = (τ::Cdouble->log(τ))
+# g_inv = (r::Cdouble->exp(r))
+
+# f_lin     = (r::Cdouble->sin(log(r)))
+# g_lin     = (τ::Cdouble->τ)
+# g_lin_inv = (r::Cdouble->r)
+
+# FG    = (τ::Cdouble->0.5τ*(sin(log(τ)) - cos(log(τ)))) 
+
+# τ_min = exp(-3π/4-2π) # 0.001 
+# τ_max = exp(π/4) # 2.0
+# Δr0 = π/2.0 # big enough so that the optional argument Nr_min is the number of discretization nodes to compute the quadrature
+
+# # # adjusted quadrature
+# # int_fg_array[j] = quadrature_fg(f,g,g_inv,τ_min,τ_max,Δr0;Nr_min=Nr_min_array[j])
+
+# # # linear quadrature
+# # int_fg_lin_array[j] = quadrature_fg(f_lin,g_lin,g_lin_inv,τ_min,τ_max,Δr0;Nr_min=Nr_min_array[j])
+# # integral value
+# val = FG(τ_max) - FG(τ_min)
+
+# # quadrature 
+# Nr_min_array     = [10; 20; 50; 100; 200; 500; 1000; 2000; 5000; 10000; 20000]
+# int_fg_array     = zeros(Cdouble,length(Nr_min_array))
+# int_fg_lin_array = zeros(Cdouble,length(Nr_min_array))
+# for j in eachindex(Nr_min_array)
+#   int_fg_array[j]     = quadrature_fg(f,g,g_inv,τ_min,τ_max,Δr0;Nr_min=Nr_min_array[j])
+#   int_fg_lin_array[j] = quadrature_fg(f_lin,g_lin,g_lin_inv,τ_min,τ_max,Δr0;Nr_min=Nr_min_array[j])
+# end
+
+# figure(figsize=[10,5]); 
+# ax0 = subplot(121)
+# τ_disc = [g_inv(r) for r in collect(LinRange(g(τ_min),g(τ_max),20))]
+# scatter(collect(LinRange(τ_min,τ_max,20)),τ_disc)
+# xlim(τ_min-0.05,τ_max+0.05)
+# xlabel("Linear discretization",fontsize=12)
+# ylabel("\$g^{-1}\$-discretization",fontsize=12)
+# xticks(fontsize=12)
+# yticks(fontsize=12)
+# ax = subplot(122)
+# loglog(Nr_min_array,abs.(int_fg_array.-val));
+# loglog(Nr_min_array,abs.(int_fg_lin_array.-val));
+# xlim(Nr_min_array[1],Nr_min_array[end])
+# xlabel("Number of discretization nodes",fontsize=12)
+# ylabel("quadrature error",fontsize=12)
+# xticks(fontsize=12)
+# yticks(fontsize=12)
+# legend(["discretization adjusted to f", "linear discretization"],fontsize=12)
+# tight_layout(pad=0.5, w_pad=0.5, h_pad=0.5)
+
+# # s = @sprintf "\$\\int_{\\tau_1}^{\\tau_2}\\sin(\\log(\\tau)) d\\tau\$ = %1.10e" val
+# # s = @sprintf "\$\\int_{\\tau_1}^{\\tau_2}\\sin(\\log(\\tau)) d\\tau\$ = %1.2f" val
+# s = @sprintf "\$\\int_{\\tau_1}^{\\tau_2}\\sin(\\log(\\tau)) d\\tau\$ = 0"
+# ax.annotate(s, xy=(3, 1),  xycoords="axes fraction", xytext=(0.1, 0.3), textcoords="axes fraction", color="black",fontsize=14)
+
+# savefig("quadrature_wrt_nb_nodes.png")
+# savefig("quadrature_wrt_nb_nodes.pdf")
 
 
 function test_τ_root_cylinder()

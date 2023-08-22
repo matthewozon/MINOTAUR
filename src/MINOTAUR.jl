@@ -39,4 +39,7 @@ include("sphere.jl")
 
 export τ_root_cylinder,quadrature_fg_cylinder
 include("cylinder.jl")
+
+# also export quadrature_fg 
+include("discretization_bijection.jl")
 end
