@@ -1,14 +1,12 @@
 [![MINAUTOR CI](https://github.com/matthewozon/MINOTAUR/actions/workflows/CI.yml/badge.svg)](https://github.com/matthewozon/MINOTAUR/actions/workflows/CI.yml)
 [![Documentation](https://github.com/matthewozon/MINOTAUR/actions/workflows/documentation.yml/badge.svg)](https://github.com/matthewozon/MINOTAUR/actions/workflows/documentation.yml)
 
-# MINOTAUR
+# MINOTAUR (coMposition INtegral cOmpuTing quAdratURe)
 Julia package for computing quadrature for integrals of composed functions
 
 ```math
 \int_{\tau_1}^{\tau_2} f(g(\tau)) \mathrm{d}\tau
 ```
-
-name: coMposition INtegral cOmpuTing quAdratURe
 
 # Examples
 
